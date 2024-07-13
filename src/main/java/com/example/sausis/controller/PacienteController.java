@@ -15,68 +15,66 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.sausis.model.Usuario;
-import com.example.sausis.service.UsuarioService;
-
+import com.example.sausis.model.Paciente;
+import com.example.sausis.service.PacienteService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Data;
 
 @RestController
-@RequestMapping("api/usuario")
+@RequestMapping("api/paciente")
 @Data
-public class UsuarioController {
+public class PacienteController {
 
     @Autowired
-    UsuarioService usuarioService;
+    PacienteService pacienteService;
     @PostMapping
-public ResponseEntity<?> create(@RequestBody Usuario usuario) {
+public ResponseEntity<?> create(@RequestBody Paciente paciente) {
         try {
-            Usuario usuarioSalvo = usuarioService.save(usuario);
-            return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);
+            Paciente pacienteSalvo = pacienteService.save(paciente);
+            return new ResponseEntity<>(pacienteSalvo, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
 @GetMapping
-public List<Usuario> findAll() {
-    return usuarioService.findAll();
+public List<Paciente> findAll() {
+    return pacienteService.findAll();
     
 }
 
 @GetMapping("/active")
-public List<Usuario> findAllActive() {
-    return usuarioService.findAllActive();
+public List<Paciente> findAllActive() {
+    return pacienteService.findAllActive();
 }
 
 @GetMapping("/eliminado")
-public List<Usuario> findAllDeleted() {
-    return usuarioService.findAllADelteded();
+public List<Paciente> findAllDeleted() {
+    return pacienteService.findAllADelteded();
 }
 
 @DeleteMapping("/{id}")
 public ResponseEntity<String> delete(@PathVariable Long id) {
     try {
-        usuarioService.deleteById(id);
-        return ResponseEntity.ok("Usuario eliminado com sucesso.");
+        pacienteService.deleteById(id);
+        return ResponseEntity.ok("paciente eliminado com sucesso.");
     } catch (EntityNotFoundException e) {
         return ResponseEntity.notFound().build();
     }
 }
 
 @PutMapping("/{id}")
-public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
+public ResponseEntity<Paciente> update(@PathVariable Long id, @RequestBody Paciente Paciente) {
     try {
-        return ResponseEntity.ok(usuarioService.update(id, usuario));
+        return ResponseEntity.ok(pacienteService.update(id, Paciente));
     } catch (EntityNotFoundException e) {
         return ResponseEntity.notFound().build();
     }
 }
 
 @GetMapping("/{id}")
-public ResponseEntity<Usuario> findById(@PathVariable Long id) {
-    Optional<Usuario> usuario = usuarioService.findById(id);
-    return usuario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+public ResponseEntity<Paciente> findById(@PathVariable Long id) {
+    Optional<Paciente> paciente = pacienteService.findById(id);
+    return paciente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 }
 }
-

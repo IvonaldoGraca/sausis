@@ -1,14 +1,14 @@
 package com.example.sausis.model;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Data;
 
-@Table(name="pacientes")
+
+
+@Data
 @Entity
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@DiscriminatorValue("Paciente")
 
 public class Paciente extends Usuario{
 
