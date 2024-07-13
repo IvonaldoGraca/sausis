@@ -11,10 +11,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @DiscriminatorValue("Funcionario")
 @Data
+@EqualsAndHashCode(callSuper=true)
+@ToString(callSuper = true)
 
 
 public class Funcionario extends Usuario {
