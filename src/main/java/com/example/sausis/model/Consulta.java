@@ -29,7 +29,7 @@ public class Consulta {
     private Estado estado;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 
     /*@ManyToOne

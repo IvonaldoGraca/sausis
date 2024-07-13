@@ -75,7 +75,7 @@ public class PacienteService {
     
                 return PacienteRepository.save(existingPaciente);
             } else {
-                throw new EntityNotFoundException("Paciente not found with id " + id);
+                throw new EntityNotFoundException("Paciente não encontrado " + id);
             }
         }
 
