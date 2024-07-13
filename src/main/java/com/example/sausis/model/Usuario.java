@@ -3,12 +3,16 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -17,6 +21,8 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="usuarios")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
 
 public class Usuario {
     @Id
@@ -43,7 +49,7 @@ public class Usuario {
     @Column(name="sexo")
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
-    
+
     @Column(name="senha")
     private String senha;
 
