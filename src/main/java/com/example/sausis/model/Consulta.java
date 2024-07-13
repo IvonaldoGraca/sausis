@@ -42,5 +42,13 @@ public class Consulta {
     @JoinColumn(name="id_catgconsulta")
     private CategoriaConsulta categoriaConsula;
 
+    @ManyToOne
+    @JoinColumn(name = "id_departamento")
+    private Departamento departamento;
+
+    @ManyToOne
+    @JoinColumn(name = "id_funcionario")
+    private Funcionario funcionario;
+
 
 }
