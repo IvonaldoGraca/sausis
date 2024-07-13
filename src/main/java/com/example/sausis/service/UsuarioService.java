@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.sausis.model.Estado;
@@ -17,7 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 
 public class UsuarioService {
 
-  @Autowired UsuarioRepository usuarioRepository;
+    @Autowired UsuarioRepository usuarioRepository;
 
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
@@ -36,19 +34,17 @@ public class UsuarioService {
     }
 
 
-    public ResponseEntity<Usuario> create(Usuario usuario) {
-            Usuario usuarioSalvo = this.save(usuario);
-            return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);            
+    public Usuario save(Usuario usuario) {
+        Optional<Usuario> existingUsuario = usuarioRepository.findByEmail(usuario.getEmail());
+        if (existingUsuario.isPresent()) {
+            throw new IllegalArgumentException("Este email já está registado, Esqueceu a senha?.");
         }
-
-        public Usuario save(Usuario usuario) {
-            return usuarioRepository.save(usuario);
-        
+        Optional<Usuario> existingUsuarioByContacto = usuarioRepository.findByContacto(usuario.getContacto());
+        if (existingUsuarioByContacto.isPresent()) {
+            throw new IllegalArgumentException("Este contacto já está registado.");
+        }
+        return usuarioRepository.save(usuario);
     }
-    public List<Usuario> getAll() { 
-            return usuarioRepository.findAll();
-        }         
-    
 
     
         public void deleteById(Long id) {
