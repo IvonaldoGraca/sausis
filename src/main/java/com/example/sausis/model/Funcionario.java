@@ -68,8 +68,11 @@ public class Funcionario {
     @Column(name="data_demissao")
     private Date data_demissao;
 
-    @Column(name="horario")
-    private LocalTime horario;
+    @Column(name="entrada")
+    private LocalTime entrada;
+
+    @Column(name="saida")
+    private LocalTime saida;
 
     @ManyToOne
     @JoinColumn(name = "id_departamento")
