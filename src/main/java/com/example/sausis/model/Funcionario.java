@@ -5,6 +5,8 @@ import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
@@ -37,4 +39,8 @@ public class Funcionario extends Usuario {
     @PrimaryKeyJoinColumn
     private Departamento departamento;
     
+    @ManyToOne
+    @PrimaryKeyJoinColumn
+    @JoinColumn(name="id_catgfuncionario")
+    private CategoriaFuncionario categoriaFuncionario;
 }

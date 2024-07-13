@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -33,12 +32,14 @@ public class Consulta {
     @JoinColumn(name = "id_usuario")
     private Paciente paciente;
 
-    @OneToOne
+    /*@ManyToOne
     @PrimaryKeyJoinColumn
+    @JoinColumn(name = "id_usuario")
     private Medico medico;
-
-    @OneToOne
+*/
+    @ManyToOne
     @PrimaryKeyJoinColumn
+    @JoinColumn(name="id_catgconsulta")
     private CategoriaConsulta categoriaConsula;
 
 

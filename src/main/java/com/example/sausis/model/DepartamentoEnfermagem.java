@@ -5,13 +5,11 @@ import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@Table(name="pacientes")
 @Entity
+@Table(name="dep_enfermagem")
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-
-public class Paciente extends Usuario{
-
-
+public class DepartamentoEnfermagem extends Departamento {
     
+
 }
