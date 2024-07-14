@@ -59,7 +59,7 @@ public class Funcionario {
     @Column(name="senha")
     private String senha;
 
-    @Column(name="num_funcionario")
+    @Column(name="num_funcionario",nullable = false,unique = true)
     private int num_funcionario;
 
     @Column(name="data_admissao")

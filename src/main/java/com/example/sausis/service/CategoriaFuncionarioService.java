@@ -59,7 +59,7 @@ public class CategoriaFuncionarioService {
                 existingcategoria.setNome(categoriaFuncionario.getNome());
                 return categoriaFuncionarioRepository.save(existingcategoria);
             } else {
-                throw new EntityNotFoundException("CategoriaFuncionario não encontrado " + id);
+                throw new EntityNotFoundException("Categoria de Funcionario não encontrado " + id);
             }
         }
 
