@@ -32,26 +32,36 @@ public class PacienteController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Paciente paciente) {
-        Optional<Paciente> pacienteExistente = pacienteService.findByEmail(paciente.getEmail());
-        
-        if (pacienteExistente.isEmpty()) {
-            Paciente novoPaciente = new Paciente();
-            novoPaciente.setSenha(passwordEncoder.encode(paciente.getSenha()));
-            novoPaciente.setEmail(paciente.getEmail());
-            novoPaciente.setNome(paciente.getNome());
-            novoPaciente.setData_nasc(paciente.getData_nasc());
-            novoPaciente.setContacto(paciente.getContacto());
-            novoPaciente.setEstado(paciente.getEstado());
-            novoPaciente.setSexo(paciente.getSexo());
-
-            Paciente pacienteSalvo = pacienteService.save(novoPaciente);
-
-            String token = tokenService.generateToken(pacienteSalvo);
-            return ResponseEntity.ok(new ResponseDTO(pacienteSalvo.getEmail(), token));
+        // Verificar se já existe um paciente com o mesmo email
+        Optional<Paciente> pacienteExistentePorEmail = pacienteService.findByEmail(paciente.getEmail());
+        if (pacienteExistentePorEmail.isPresent()) {
+            return ResponseEntity.badRequest().body("Já existe um paciente registado com este e-mail.");
         }
-        
-        return ResponseEntity.badRequest().body("Paciente já existe com este e-mail.");
+    
+        // Verificar se já existe um paciente com o mesmo contato
+        Optional<Paciente> pacienteExistentePorContacto = pacienteService.findByContacto(paciente.getContacto());
+        if (pacienteExistentePorContacto.isPresent()) {
+            return ResponseEntity.badRequest().body("Já existe um paciente registado com este contato.");
+        }
+    
+        // Se não existirem, criar um novo paciente
+        Paciente novoPaciente = new Paciente();
+        novoPaciente.setSenha(passwordEncoder.encode(paciente.getSenha()));
+        novoPaciente.setEmail(paciente.getEmail());
+        novoPaciente.setNome(paciente.getNome());
+        novoPaciente.setData_nasc(paciente.getData_nasc());
+        novoPaciente.setContacto(paciente.getContacto());
+        novoPaciente.setEstado(paciente.getEstado());
+        novoPaciente.setSexo(paciente.getSexo());
+    
+        // Salvar o paciente no banco de dados
+        Paciente pacienteSalvo = pacienteService.save(novoPaciente);
+    
+        // Gerar token e retornar a resposta
+        String token = tokenService.generateToken(pacienteSalvo);
+        return ResponseEntity.ok(new ResponseDTO(pacienteSalvo.getEmail(), token));
     }
+    
 
 
     @PostMapping("/login")

@@ -90,6 +90,10 @@ public class PacienteService {
        return PacienteRepository.findByEmail(email);
     }
 
+	public Optional<Paciente> findByContacto(int contacto) {
+		return PacienteRepository.findByContacto(contacto);
+	}
+
 }
 
 
