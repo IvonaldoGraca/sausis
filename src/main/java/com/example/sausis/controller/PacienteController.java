@@ -59,14 +59,34 @@ public class PacienteController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDTO> login(@RequestBody LoginRequestDTO body) {
-        Paciente paciente = this.pacienteRepository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
-        if (passwordEncoder.matches(body.senha(), paciente.getSenha())) {
-            String token = this.tokenService.generateToken(paciente);
-            return ResponseEntity.ok(new ResponseDTO(paciente.getEmail(), token));
-        }
-        return ResponseEntity.badRequest().build();
+public ResponseEntity<?> login(@RequestBody LoginRequestDTO body) {
+    // Verifica se o e-mail está vazio ou nulo
+    if (body.email() == null || body.email().isEmpty()) {
+        return ResponseEntity.badRequest().body("O e-mail não pode estar vazio, Digite o seu email.");
     }
+
+    // Verifica se a senha está vazia ou nula
+    if (body.senha() == null || body.senha().isEmpty()) {
+        return ResponseEntity.badRequest().body("A senha não pode estar vazia.");
+    }
+
+    // Procura o paciente pelo e-mail
+    Paciente paciente = pacienteRepository.findByEmail(body.email())
+        .orElse(null);
+
+    // Verifica se o paciente foi encontrado
+    if (paciente == null) {
+        return ResponseEntity.badRequest().body("Usuário não encontrado com o e-mail fornecido.");
+    }
+
+    // Verifica se a senha está correta
+    if (!passwordEncoder.matches(body.senha(), paciente.getSenha())) {
+        return ResponseEntity.badRequest().body("Senha incorreta.");
+    }
+
+    String token = tokenService.generateToken(paciente);
+    return ResponseEntity.ok(new ResponseDTO(paciente.getEmail(), token));
+}
 
     @GetMapping
     public List<Paciente> findAll() {
