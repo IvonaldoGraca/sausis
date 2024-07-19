@@ -11,6 +11,7 @@ import com.example.sausis.model.Paciente;
 public interface PacienteRepository extends JpaRepository<Paciente,Long> {
     
     List<Paciente> findByEstado(Estado estado);
+    List<Paciente>findAll();
     Optional<Paciente> findByEmail(String email);
     Optional<Paciente> findByContacto(int contacto);
     
