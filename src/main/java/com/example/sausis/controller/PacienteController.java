@@ -29,22 +29,19 @@ public class PacienteController {
     private final PacienteService pacienteService;
     @Autowired
     private final PacienteRepository pacienteRepository;
-
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody Paciente paciente) {
-        // Verificar se já existe um paciente com o mesmo email
         Optional<Paciente> pacienteExistentePorEmail = pacienteService.findByEmail(paciente.getEmail());
-        if (pacienteExistentePorEmail.isPresent()) {
-            return ResponseEntity.badRequest().body("Já existe um paciente registado com este e-mail.");
-        }
-    
-        // Verificar se já existe um paciente com o mesmo contato
         Optional<Paciente> pacienteExistentePorContacto = pacienteService.findByContacto(paciente.getContacto());
-        if (pacienteExistentePorContacto.isPresent()) {
-            return ResponseEntity.badRequest().body("Já existe um paciente registado com este contato.");
+        
+        if (pacienteExistentePorEmail.isPresent()) {
+            return ResponseEntity.badRequest().body("já existe um paciente registado com este e-mail.");
         }
     
-        // Se não existirem, criar um novo paciente
+        if (pacienteExistentePorContacto.isPresent()) {
+            return ResponseEntity.badRequest().body("já existe um paciente registado com este contacto.");
+        }
+    
         Paciente novoPaciente = new Paciente();
         novoPaciente.setSenha(passwordEncoder.encode(paciente.getSenha()));
         novoPaciente.setEmail(paciente.getEmail());
@@ -54,40 +51,42 @@ public class PacienteController {
         novoPaciente.setEstado(paciente.getEstado());
         novoPaciente.setSexo(paciente.getSexo());
     
-        // Salvar o paciente no banco de dados
         Paciente pacienteSalvo = pacienteService.save(novoPaciente);
     
-        // Gerar token e retornar a resposta
         String token = tokenService.generateToken(pacienteSalvo);
         return ResponseEntity.ok(new ResponseDTO(pacienteSalvo.getEmail(), token));
     }
-    
 
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDTO> login(@RequestBody LoginRequestDTO body) {
-
-        // Verificar se o email está vazio
-    if (body.email() == null || body.email().trim().isEmpty()) {
-        return ResponseEntity.badRequest().body(new ResponseDTO("Deve preencher o seu email.", null));
+public ResponseEntity<?> login(@RequestBody LoginRequestDTO body) {
+    // Verifica se o e-mail está vazio ou nulo
+    if (body.email() == null || body.email().isEmpty()) {
+        return ResponseEntity.badRequest().body("O e-mail não pode estar vazio, Digite o seu email.");
     }
 
-    // Verificar se o email já está registrado
-    Optional<Paciente> optionalPaciente = pacienteRepository.findByEmail(body.email());
-    if (optionalPaciente.isEmpty()) {
-        return ResponseEntity.badRequest().body(new ResponseDTO("Email não registrado.", null));
+    // Verifica se a senha está vazia ou nula
+    if (body.senha() == null || body.senha().isEmpty()) {
+        return ResponseEntity.badRequest().body("A senha não pode estar vazia.");
     }
 
-    Paciente paciente = optionalPaciente.get();
+    // Procura o paciente pelo e-mail
+    Paciente paciente = pacienteRepository.findByEmail(body.email())
+        .orElse(null);
 
-    // Verificar se a senha está correta ou não
+    // Verifica se o paciente foi encontrado
+    if (paciente == null) {
+        return ResponseEntity.badRequest().body("Usuário não encontrado com o e-mail fornecido.");
+    }
+
+    // Verifica se a senha está correta
     if (!passwordEncoder.matches(body.senha(), paciente.getSenha())) {
-        return ResponseEntity.badRequest().body(new ResponseDTO("Senha incorreta.", null));
+        return ResponseEntity.badRequest().body("Senha incorreta.");
     }
+
     String token = tokenService.generateToken(paciente);
     return ResponseEntity.ok(new ResponseDTO(paciente.getEmail(), token));
 }
-    
 
     @GetMapping
     public List<Paciente> findAll() {
