@@ -50,12 +50,7 @@ public List<Funcionario> findAllActive() {
     return funcionarioService.findAllActive();
 }
 
-@GetMapping("/eliminado")
-public List<Funcionario> findAllDeleted() {
-    return funcionarioService.findAllADelteded();
-}
-
-@DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
 public ResponseEntity<String> delete(@PathVariable Long id) {
     try {
         funcionarioService.deleteById(id);

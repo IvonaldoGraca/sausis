@@ -30,7 +30,12 @@ public class CategoriaFuncionarioController {
     @Autowired
     CategoriaFuncionarioService CategoriaFuncionarioService;
     @PostMapping
-public ResponseEntity<?> save(@RequestBody CategoriaFuncionario CategoriaFuncionario) {
+
+    public com.example.sausis.service.CategoriaFuncionarioService getCategoriaFuncionarioService() {
+        return CategoriaFuncionarioService;
+    }
+
+    public ResponseEntity<?> save(@RequestBody CategoriaFuncionario CategoriaFuncionario) {
         try {
             CategoriaFuncionario CategoriaFuncionarioSalvo = CategoriaFuncionarioService.save(CategoriaFuncionario);
             return new ResponseEntity<>(CategoriaFuncionarioSalvo, HttpStatus.CREATED);

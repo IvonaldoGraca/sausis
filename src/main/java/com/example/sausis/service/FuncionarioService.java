@@ -28,7 +28,7 @@ public class FuncionarioService {
         return FuncionarioRepository.findByEstado(Estado.ELIMINADO);
     }
 
-    public List<Funcionario> findAllAPendente() {
+    public List<Funcionario> findAllPendente() {
         return FuncionarioRepository.findByEstado(Estado.PENDENTE);
     }
 
