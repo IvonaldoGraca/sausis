@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.sausis.dto.ResponseDTO;
 import com.example.sausis.model.Estado;
 import com.example.sausis.model.Paciente;
 import com.example.sausis.repository.PacienteRepository;
@@ -90,9 +88,9 @@ public class PacienteService {
        return PacienteRepository.findByEmail(email);
     }
 
-	public Optional<Paciente> findByContacto(int contacto) {
-		return PacienteRepository.findByContacto(contacto);
-	}
+    public Optional<Paciente> findByContacto(int contacto) {
+       return PacienteRepository.findByContacto(contacto);
+    }
 
 }
 

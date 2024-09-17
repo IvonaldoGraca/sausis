@@ -29,7 +29,7 @@ public class DepartamentoController {
 
     @Autowired
     DepartamentoService departamentoService;
-    @PostMapping
+    @PostMapping("/create")
 public ResponseEntity<?> create(@RequestBody Departamento departamento) {
         try {
             Departamento departamentoSalvo = departamentoService.save(departamento);

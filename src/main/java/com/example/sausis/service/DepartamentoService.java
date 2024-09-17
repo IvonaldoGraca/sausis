@@ -46,6 +46,7 @@ public class DepartamentoService {
             Optional<Departamento> DepartamentoOpt = departamentoRepository.findById(id);
             if (DepartamentoOpt.isPresent()) {
                 Departamento departamento = DepartamentoOpt.get();
+                 departamento.setEstado(Estado.ELIMINADO);
                 departamentoRepository.save(departamento);
             } else {
                 throw new EntityNotFoundException("Departamento com o ID " + id + " não encontrado.");
